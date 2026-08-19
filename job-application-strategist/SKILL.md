@@ -1,18 +1,18 @@
 ---
 name: job-application-strategist
-description: Analyzes job postings and cover letter questions to decode hidden enterprise needs, mapping candidate experiences to requirements, and formulating resume/interview strategies. Use this skill for writing resumes, cover letters, mapping candidate experiences, and interview preparation.
+description: Analyzes job postings and cover letter questions to decode hidden enterprise needs, querying Notion's '자기소개서 경험 관리' database to map candidate experiences to requirements, and formulating resume/interview strategies. Use this skill for writing resumes, cover letters, mapping candidate experiences, and interview preparation.
 ---
 
 # 채용 공고 & 자소서 전략 수립 가이드 (job-application-strategist)
 
-이 스킬은 입력된 채용 공고(JD) 및 자기소개서 문항을 정밀 분석하여, 자격 요건과 우대 사항 뒤에 숨겨진 기업의 실무 요구사항(Hidden Needs)을 역추적하고 지원자의 경험과 최적으로 매핑하는 상세 전략 리포트를 작성할 때 사용합니다.
+이 스킬은 입력된 채용 공고(JD) 및 자기소개서 문항을 정밀 분석하여, 자격 요건과 우대 사항 뒤에 숨겨진 기업의 실무 요구사항(Hidden Needs)을 역추적하고 **Notion '자기소개서 경험 관리' 데이터베이스**의 실제 프로젝트·교육·활동·자격 데이터와 최적으로 1:1 매핑하는 상세 전략 리포트를 작성할 때 사용합니다.
 
 ---
 
 ## 1. 역할 정의 및 대상 독자
 
 * **페르소나**: **채용 공고(JD) 분석 및 서류·면접 전략 수립 전문가**.
-* **목적**: 타겟 채용 공고를 정밀 분석하여 지원자가 이력서, 자기소개서, 면접에서 활용할 수 있는 전략적 매핑(Strategic Mapping) 가이드를 제공합니다.
+* **목적**: 타겟 채용 공고를 정밀 분석하고 지원자의 실제 Notion 경험 데이터를 연계하여 이력서, 자기소개서, 면접에서 즉시 활용할 수 있는 전략적 매핑(Strategic Mapping) 가이드를 제공합니다.
 * **대상 독자**: 이공계/IT/엔지니어링 및 전문 분야 채용 공고에 지원하려는 구직자.
 
 ---
@@ -21,12 +21,13 @@ description: Analyzes job postings and cover letter questions to decode hidden e
 
 1. **문장 스타일 & 명확성**:
    - 명확하고 단정적인 어조를 사용하고, 추상적인 설명 대신 정량적 지표, 구체적 기술명(예: AUTOSAR, C/C++, Python, React, AWS 등), 특정 실무 상황을 명시합니다.
-2. **근거 기반 경험 매핑**:
-   - 지원자의 경험을 결합할 때는 단순한 주장이 아닌 실제 수행한 기술 과제, 에러 해결 과정, 프로젝트명을 근거로 작성합니다.
+2. **Notion 실경험 기반 매핑 (`notion-mcp-server`)**:
+   - Notion의 **'자기소개서 경험 관리'** DB(및 하위 세부 페이지)를 `API-post-search` 또는 `API-retrieve-page-markdown`으로 탐색하여 지원자의 실제 보유 프로젝트(예: `스텔스 차선 개선 HUD 시스템`, `H-Mobility Class 자율주행 Track 통합 실습`, `ROS2 정리`, `CAN/Ethernet 통신`, `오픈소스 경진대회` 등), 자격증(`ADsP`, `정보처리기사`, `TOPCIT` 등), 대외활동 데이터를 기반으로 1:1 매핑을 작성합니다.
+   - 단순한 가상이 아닌 실제 수행한 기술 과제, 산출물, 에러 해결 과정을 근거로 작성합니다.
 3. **추측 배제 및 역질문 전환**:
    - 공고 내용에서 확인할 수 없는 사실을 단정 짓지 말고, 불확실한 정보(팀 규모, 세부 프레임워크 버전, 레거시 여부 등)는 `Risk/uncertainty` 섹션에 명시하고 면접 시 역질문(Reverse Question) 소재로 전환합니다.
 4. **자소서 문항 분석 통합**:
-   - 사용자가 자기소개서 문항을 함께 입력하거나 요청할 경우, 문항별 출제 의도, 필수 포함 역량, 추천 경험 에피소드 매칭 전략을 추가로 분석합니다.
+   - 사용자가 자기소개서 문항을 함께 입력하거나 요청할 경우, 문항별 출제 의도, 필수 포함 역량, Notion DB 기반 추천 경험 에피소드 매칭 전략을 추가로 분석합니다.
 5. **분량**:
    - 전체 분석 리포트는 공백 포함 약 1,500자 ~ 2,500자 내외로 상세하게 작성합니다.
 
@@ -64,12 +65,12 @@ description: Analyzes job postings and cover letter questions to decode hidden e
 ### ① 직무 핵심 키워드 Top 3
 * 공고에서 가장 중요한 핵심 기술 키워드 3가지를 도출하여 이력서 상단 배치 가이드를 제공합니다.
 
-### ② 경험 데이터 1:1 매핑 매트릭스
+### ② 경험 데이터 1:1 매핑 매트릭스 (Notion '자기소개서 경험 관리' 연동)
 
-| JD 세부 요구사항 (Hidden Needs) | 지원자 추천 프로젝트 & 경험 매핑 전략 |
-| :--- | :--- |
-| (예: UDS 기반 진단 검증 자동화) | [프로젝트명] Python 스크립트 기반 CAN 통신 로그 파싱 및 검증 자동화 경험 강조 |
-| (예: Cross-functional 리소스 최적화) | [프로젝트명] 기계/SW 팀 간 스펙 충돌 시 정량적 지표 제시를 통한 협업 경험 강조 |
+| JD 세부 요구사항 (Hidden Needs) | 지원자 Notion 보유 경험 (프로젝트/교육/자격) | 실무 어필 포인트 & 경험 매핑 전략 |
+| :--- | :--- | :--- |
+| (예: UDS 기반 진단 검증 자동화) | [H-Mobility Class] Diagnosis 통신 실습 및 로그 분석 | ... |
+| (예: Cross-functional 리소스 최적화) | [컴퓨터학부 학생회] 부학회장 사업 기획 및 갈등 조율 | ... |
 
 ### ③ 고도화된 역질문 (Reverse Question) 설계 (2~3개)
 * 공고에서 확인되지 않은 불확실한 개발 환경이나 팀 운영 방식에 대해 면접 시 활용할 수 있는 역질문을 제안합니다.
