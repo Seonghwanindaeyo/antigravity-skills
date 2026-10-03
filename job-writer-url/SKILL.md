@@ -1,4 +1,4 @@
-﻿---
+---
 name: job-writer-url
 description: All-in-One Master Job & Cover Letter Engine with 2-Stage Interactive Mode. Executes 3-in-1 company/job analysis with real-time web research, queries Notion '자기소개서 경험 관리' DB for candidate experience mapping, writes high-density professional cover letter drafts (including specialized R-C-S-V weakness protocol), runs ATS keyword optimization, extracts drill-down interview questions, and performs automatic write-back to Notion '기업 채용공고 목록 DB'. Use via /job-writer-url.
 ---
@@ -164,8 +164,8 @@ STAGE 1에서는 아래 포맷으로 분석 리포트와 자소서 전략 Bluepr
   * **모범 방어 논리 (Defensive Strategy)**: (수치 산출 근거 및 추가 극복 노력 중심의 방어 가이드)
 * **[꼬리 질문 2~3]**: ...
 
-### 4) PART 8. Notion 지원 이력 자동 역동기화 (Write-back) & 마크다운 파일 통합 업로드
-스킬 실행 시 Notion의 **'기업 채용공고 목록 DB'**에 새로운 지원 아이템(Row)을 `API-post-page`로 자동 생성하고, 로컬 아티팩트로 저장된 **STAGE 1(3-in-1 분석 리포트)과 STAGE 2(완성형 자소서·ATS·면접 질문)**의 마크다운 전체 내용을 `API-update-page-markdown`으로 Notion 페이지 본문에 통합 기록(동시 업로드)합니다.
+### 4) PART 8. Notion 지원 이력 자동 역동기화 (Write-back) & 9월 29일 기아 표준 양식 업로드
+스킬 실행 시 Notion의 **'기업 채용공고 목록 DB'**에 새로운 지원 아이템(Row)을 `API-post-page`로 자동 생성하고, **채용 마감일이 9월 29일까지 작성된 양식(기아 신차품질 카드, Page ID: `3dc7d6f5-8fa5-81e2-a9ba-f0f425750008`)**과 100% 동일한 구조로 완성형 자소서 및 실전 면접 준비 마크다운을 `API-update-page-markdown`을 통해 Notion 페이지 본문에 즉시 업로드합니다.
 
 * **로컬 마크다운 아티팩트 관리**:
   * `stage1_analysis_report.md`: PART 1 ~ PART 4 및 Blueprint 작성 전략 설계도
@@ -175,25 +175,54 @@ STAGE 1에서는 아래 포맷으로 분석 리포트와 자소서 전략 Bluepr
   * `지원 공고명` (title): `[기업명] 공고 제목`
   * `기업명` (rich_text): 기업명
   * `채용공고` (url): 공고 URL
-  * `직무` (select): "완성차" / "차량 부품" / "방산" 중 매칭
+  * `직무` (select): "완성차" / "차량 부품" / "방산" / "기타" 중 매칭
   * `우선순위` (select): "상 (High)" (기본값)
-  * `진행상황` (status): **"관심"** (무조건 "관심"으로 설정)
+  * `진행상황` (status): **"관심"** (★ **무조건 "관심"으로 설정**, 예외 없음)
   * `기업 규모` (select): "대기업" / "중견기업" / "스타트업"
-  * `지원서류` (multi_select): `[{"name": "이력서"}, {"name": "자기소개서"}, {"name": "포트폴리오"}]`
+  * `지원서류` (multi_select): `[{"name": "이력서"}, {"name": "자기소개서"}]`
   * `채용 경력` (multi_select): `[{"name": "신입"}]` 또는 `[{"name": "경력"}]`
+  * `채용 마감일` (date): 공고에 명시된 마감일 (`YYYY-MM-DD`)
   * `지원 날짜` (date): 실행 당일 날짜 (`YYYY-MM-DD`)
   * `특이사항` (rich_text): 3-in-1 분석 요약 및 매핑된 핵심 역량 요약
-* **Page Body 통합 업로드 (`API-update-page-markdown`)**:
-  * **Notion DB 기본 템플릿(7대 콜아웃 블록) 상단 자동 구성**:
-    1. `<callout icon="🔎">` **기업 정보** (설립일, 비전, 사업 내용, 재무 실적 등)
-    2. `<callout icon="💻">` **주요 업무** (공고 직무 상세 및 담당 업무)
-    3. `<callout icon="🎯">` **자격요건** (학력, 병역, 필수 자격)
-    4. `<callout icon="🔥">` **우대사항** (우대 전공, 자격증, 필요 역량)
-    5. `<callout icon="🏖️">` **혜택 및 복지** (`<복리후생>`, `<근무 환경>`, `<휴가 제도>`)
-    6. `<callout icon="📝">` **채용 전형** (`[지원 및 전형 절차]`, `[기타 사항]`)
-    7. `<callout icon="💬">` **면접 준비** (`면접 예상 질문 1~3` 및 `예상 질문에 대한 답(모범 방어 논리)`)
-  * **모든 콜아웃 블록 하단에 분석/자소서 제목 1 토글 배치**:
-    위 7대 템플릿 콜아웃 블록 **모두의 바로 아래(최하단)**에 **제목 1 토글(`# [기업명 / 지원직무] 올인원 채용 분석 리포트 & 자기소개서 완성본 {toggle="true"}`)**을 배치하여, 그 내부에 **STAGE 1(기업/직무 분석, Hidden Needs 매핑, Blueprint) + STAGE 2(자소서 완성본 3문항, ATS 매트릭스, 압박 면접 질문/방어 논리)** 전체 전문을 깔끔하게 접히는 하위 탭으로 저장합니다.
+* **Page Body 업로드 표준 규격 (`API-update-page-markdown`) — 9월 29일 기아 표준 카드 양식 준수**:
+  > ⚠️ **엄격한 배제 원칙**: 7대 콜아웃 박스(`🔎`, `💻` 등) 작성 금지, 자소서를 감추는 접힌 토글(`# ... {toggle="true"}`) 작성 금지. 접속 즉시 본문에서 자소서 문항 카드와 2분 면접 스피치 카드가 직관적으로 열람되어야 합니다.
+
+  1. **자소서 문항별 1열 단일 테이블 카드 (`<table>` 규격)**:
+     - 각 자소서 문항마다 단독 1열 `<table>` 블록을 생성하여 카드형 UI로 렌더링.
+     - 1행: `<tr><td>**[문항 N] 문항 질문 전문 및 지정 글자 수 (예: 700자)**</td></tr>`
+     - 2행: `<tr><td>**[소제목]**<br><br>단락 1 내용...<br><br>단락 2 내용...</td></tr>`
+     - *단락 구분*: 테이블 단일 셀 내부에서는 줄바꿈으로 `<br><br>`을 사용하여 깔끔하게 단락 구분.
+  2. **대내외활동 / 직장경력 1열 테이블 카드 (선택/해당 시)**:
+     - 대내외활동이나 경력 기술서 문항이 존재하는 경우 동일한 테이블 카드 양식으로 직관적 배치.
+     - 1행: `<tr><td>**대내외활동 - [활동명] (글자수)**</td></tr>` 또는 `<tr><td>**직장경력 - [회사/기관명] (글자수)**</td></tr>`
+     - 2행: `<tr><td>**[소제목]**<br><br>본문 단락들...</td></tr>`
+  3. **실전 면접 준비 2분 스피치 4대 세트 (`###` 제목 및 테이블 블록)**:
+     자소서 및 활동 테이블 카드 바로 아래에 면접 대비 핵심 2분 스피치 4대 세트를 배치:
+     - `### 자기소개 (2분)`
+       `<empty-block/>`
+     - `### 지원동기 (2분)`
+       ```html
+       <table>
+       <colgroup><col width="709.65625"></colgroup>
+       <tr><td>**[문항 1] 지원동기 문항 질문 요약**</td></tr>
+       <tr><td>**[소제목]**<br><br>(개조식/핵심 스피치 요약 대본, 기호 →, ⇒ 등을 활용하여 말하기 편한 플로우로 구조화)</td></tr>
+       </table>
+       ```
+     - `### 직무적합도 (2분)`
+       ```html
+       <table>
+       <colgroup><col width="709.65625"></colgroup>
+       <tr><td>**[직무 핵심 역량 소제목]**</td></tr>
+       <tr><td>(직무 관련 핵심 역량 요약, 프로젝트 트러블슈팅 및 정량 성과 스피치 대본)</td></tr>
+       </table>
+       ```
+     - `### [기업명] 관심도_인재상에 얼마나 적합한지 (2분)`
+       ```html
+       <table>
+       <colgroup><col width="709.65625"></colgroup>
+       <tr><td>[기업명]의 인재상 : [인재상 내용]<br><br>(지원자의 삶/직업 가치관, 동료와의 협업/도전 및 실패 극복을 통한 성장 스토리 스피치 대본)</td></tr>
+       </table>
+       ```
 
 ---
 
@@ -246,5 +275,5 @@ STAGE 1에서는 아래 포맷으로 분석 리포트와 자소서 전략 Bluepr
 
 * **동기화 상태**: ✅ 완료 (취업 준비 플래너 > 기업 채용공고 목록 DB)
 * **생성된 Notion 페이지**: `[링크 또는 페이지 ID]`
-* **기록된 항목**: 기업명, 공고명, 직무 분류, 지원 날짜, 진행 상황(관심), 본문 최하단 제목1 토글 내 자소서/분석 마크다운 자동 저장
+* **기록된 항목**: 기업명, 공고명, 직무 분류, 채용 마감일, 지원 날짜, 진행 상황(무조건 "관심"), 본문 9월 29일 기아 표준 양식(문항별 1열 단일 테이블 카드 + 2분 면접 스피치 4대 세트) 자동 저장
 ```
